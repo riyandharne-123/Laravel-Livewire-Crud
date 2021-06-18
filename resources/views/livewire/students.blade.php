@@ -27,9 +27,11 @@
                 </thead>
                 <tbody wire:sortable="updateOrder">
                 @foreach ($students as $student)
-                <tr wire:sortable.item="{{ $student->id }}" wire:key="student-{{ $student->id }}" wire:sortable.handle>
-                    <td>{{ $student->name }}</td>
-                    <td>{{ $student->email }}</td>
+                <tr wire:sortable.item="{{ $student->id }}" wire:key="student-{{ $student->id }}">
+                    <div>
+                        <td wire:sortable.handle>{{ $student->name }}</td>
+                        <td>{{ $student->email }}</td>
+                    </div>
                     <td>
                         <button class="btn btn-info" wire:click.prevent="edit({{$student->id}})" data-toggle="modal" data-target="#updateStudentModal">Edit</button>
                         <button class="btn btn-danger" wire:click.prevent="delete({{$student->id}})">Delete</button>
