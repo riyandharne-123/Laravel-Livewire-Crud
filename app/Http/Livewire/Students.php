@@ -29,7 +29,23 @@ class Students extends Component
             'email' => 'required|email',
         ]);
 
-        Student::create($validatedData);
+        $student = Student::all()->last();
+        $i = '';
+        
+        if ($student->order)
+        {
+            $i = $student->order += 1;
+        }
+
+        else {
+            $i = 1;
+        }
+
+        Student::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'order' => $i,
+        ]);
 
         session()->flash('message', 'Student Created Successfully!');
         
@@ -61,9 +77,26 @@ class Students extends Component
         $this->emit('studentUpdated');
     }
 
+    public function updateOrder($list)
+    {
+        foreach ($list as $item) {
+            Student::find($item['value'])->update([
+                'order' => $item['order'],
+            ]);
+        }
+    }
+
+    public function delete($id)
+    {
+        $student = Student::find($id);
+        $student->delete();
+
+        session()->flash('message', 'Student Deleted Successfully!');
+    }
+
     public function render()
     {
-        $students = Student::orderBy('created_at','DESC')->paginate(6);
+        $students = Student::orderBy('order','ASC')->paginate(6);
         return view('livewire.students',['students' => $students]);
     }
 }
